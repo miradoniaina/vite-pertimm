@@ -52,11 +52,7 @@ yarn install
 ```
 
 ### 4. Copy .env
-
-Run the development server to start the application:
-
 ```bash
-# Using npm
 cp .env.example .env
 ```
 

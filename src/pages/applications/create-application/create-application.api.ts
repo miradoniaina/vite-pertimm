@@ -14,9 +14,9 @@ export const getApplicationApi = async (uid: string) => {
   return response.data;
 };
 
-export const confirmApplicationApi = async (uid: string, confirmed: boolean) => {
+export const confirmApplicationApi = async (url: string, confirmed: boolean) => {
   const response = await axios.patch(
-    `/api/v1.1/job-application-request/${uid}/`,
+    `${url}`,
     {
       confirmed,
     }

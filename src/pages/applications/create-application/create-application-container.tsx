@@ -23,6 +23,12 @@ export const CreateApplicationContainer = () => {
     mutationFn: createApplicationApi,
   });
 
+  const { data: application, refetch } = useQuery<Application>({
+    queryKey: ["getApplication", createApplicationData?.uid],
+    queryFn: () => getApplicationApi(String(createApplicationData?.uid)),
+    enabled: Boolean(createApplicationData),
+  });
+
   const {
     mutateAsync: confirmApplicationAsync,
     isPending: confirmationPending,
@@ -30,19 +36,13 @@ export const CreateApplicationContainer = () => {
     Application,
     Error,
     {
-      uid: string;
+      url: string;
       confirmed: boolean;
     }
   >({
-    mutationKey: ["confirmApplication", createApplicationData?.uid],
+    mutationKey: ["confirmApplication", application?.uid],
     mutationFn: () =>
-      confirmApplicationApi(String(createApplicationData?.uid), true),
-  });
-
-  const { data: application, refetch } = useQuery<Application>({
-    queryKey: ["getApplication", createApplicationData?.uid],
-    queryFn: () => getApplicationApi(String(createApplicationData?.uid)),
-    enabled: Boolean(createApplicationData),
+      confirmApplicationApi(String(application?.confirmation_url), true),
   });
 
   useEffect(() => {
@@ -68,11 +68,9 @@ export const CreateApplicationContainer = () => {
 
   const handleSubmit = async (formData: CreateApplicationFormValues) => {
     try {
-      if (
-        application?.status === "COMPLETED"
-      ) {
+      if (application?.status === "COMPLETED") {
         await confirmApplicationAsync({
-          uid: `${application?.uid}`,
+          url: `${application?.confirmation_url}`,
           confirmed: true,
         });
 
@@ -80,6 +78,7 @@ export const CreateApplicationContainer = () => {
           title: "Application confirmé avec succès",
           description: `L'application a été confirmé.`,
         });
+
       } else {
         handleCreateApplication(formData);
       }

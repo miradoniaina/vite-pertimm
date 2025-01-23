@@ -88,7 +88,7 @@ export function CreateApplicationForm({
                     <FormLabel className="font-medium">Prénom</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Johm"
+                        placeholder="John"
                         {...field}
                         value={field.value}
                         className="transition-all duration-200 focus:ring-2 focus:ring-blue-500"
