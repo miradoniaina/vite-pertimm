@@ -4,6 +4,7 @@ import { Layout } from "./custom/layout";
 import Sidebar from "./sidebar";
 import SkipToMain from "./skip-to-main";
 import { UserNav } from "./user-nav";
+import ThemeSwitch from "./theme-switch";
 
 export const AppShell = () => {
   const [isCollapsed, setIsCollapsed] = useIsCollapsed();
@@ -21,6 +22,7 @@ export const AppShell = () => {
         <Layout>
           <Layout.Header sticky>
             <div className="ml-auto flex items-center space-x-4">
+              <ThemeSwitch />
               <UserNav
                 profile={{
                   lastName: "Miradoniaina",
