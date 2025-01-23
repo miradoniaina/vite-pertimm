@@ -30,7 +30,7 @@ export function SignInContainer() {
         return;
       }
 
-      localStorage.setItem("token", result.token);
+      localStorage.setItem("token", result.token); 
       navigate("/");
     } catch (err) {
       const message = (err as AxiosError)?.response?.data?.message;

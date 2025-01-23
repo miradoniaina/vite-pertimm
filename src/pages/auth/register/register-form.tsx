@@ -1,6 +1,5 @@
 import { HTMLAttributes, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -14,38 +13,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/custom/password-input";
 import { useNavigate } from "react-router-dom";
+import { RegisterFormSchema, RegisterFormValues } from "./register-form.schema";
 
 interface RegisterProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "onSubmit"> {
-  onSubmit?: (data: z.infer<typeof formSchema>) => Promise<void>;
+  onSubmit?: (data: RegisterFormValues) => Promise<void>;
   errorMsg?: string;
 }
-
-const formSchema = z.object({
-  login: z
-    .string()
-    .min(1, { message: "Veuillez entrer votre email" })
-    .email({ message: "Adresse email invalide" }),
-  password: z
-    .string()
-    .min(1, {
-      message: "Veuillez entrer votre mot de passe",
-    })
-    .min(4, {
-      message: "Le mot de passe doit contenir au moins 4 caractères",
-    }),
-  confirmPassword: z
-    .string()
-    .min(1, {
-      message: "Veuillez entrer votre mot de passe",
-    })
-    .min(4, {
-      message: "Le mot de passe doit contenir au moins 4 caractères",
-    }),
-}).refine((data) => data.password === data.confirmPassword, {
-  path: ["confirmPassword"],
-  message: "Les mots de passe ne correspondent pas",
-});;
 
 export function RegisterForm({
   onSubmit: onSubmitProps,
@@ -54,12 +28,12 @@ export function RegisterForm({
 }: RegisterProps) {
   const navigate = useNavigate();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<RegisterFormValues>({
+    resolver: zodResolver(RegisterFormSchema),
     defaultValues: {
-      login: "",
+      email: "",
       password: "",
-      confirmPassword: ""
+      confirmPassword: "",
     },
   });
 
@@ -69,7 +43,7 @@ export function RegisterForm({
     clearErrors,
   } = form;
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+  const onSubmit = async (data: RegisterFormValues) => {
     if (onSubmitProps) {
       await onSubmitProps(data);
     }
@@ -93,7 +67,7 @@ export function RegisterForm({
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
             control={form.control}
-            name="login"
+            name="email"
             render={({ field }) => (
               <FormItem className="space-y-1">
                 <FormLabel>Email</FormLabel>

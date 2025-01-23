@@ -36,13 +36,16 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            loader: () => redirect("/applications/new"),
+            loader: () => redirect("/applications"),
           },
           {
             path: "applications",
             children: [
               {
                 index: true,
+                loader: () => redirect("/applications/new"),
+              },
+              {
                 path: 'new',
                 lazy: async () => ({
                   Component: (
@@ -50,14 +53,6 @@ const router = createBrowserRouter([
                   ).CreateApplicationContainer,
                 }),
               },
-              // {
-              //   path: ':id',
-              //   lazy: async () => ({
-              //     Component: (
-              //       await import('@/pages/categories/update-category/update-category-container.tsx')
-              //     ).UpdateCategoryContainer,
-              //   }),
-              // },
             ],
           },
         ],

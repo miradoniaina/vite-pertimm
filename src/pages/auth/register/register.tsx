@@ -1,8 +1,9 @@
 import { Card } from "@/components/ui/card";
 import { RegisterForm } from "./register-form";
+import { RegisterFormValues } from "./register-form.schema";
 
 type RegisterProps = {
-  onSubmit: (data: { login: string; password: string }) => Promise<void>;
+  onSubmit: (data: RegisterFormValues) => Promise<void>;
   errorMsg?: string;
 };
 
@@ -27,12 +28,14 @@ export default function Register({ onSubmit, errorMsg }: RegisterProps) {
         </div>
         <Card className="p-6">
           <div className="mb-1 flex flex-col space-y-2 text-left">
-            <h1 className="text-2xl font-semibold tracking-tight">S'inscrire</h1>
+            <h1 className="text-2xl font-semibold tracking-tight">
+              S'inscrire
+            </h1>
             <p className="text-sm text-muted-foreground">
               Remplissez les champs ci-dessous
             </p>
           </div>
-            <RegisterForm onSubmit={onSubmit} errorMsg={errorMsg} />
+          <RegisterForm onSubmit={onSubmit} errorMsg={errorMsg} />
         </Card>
       </div>
     </div>
